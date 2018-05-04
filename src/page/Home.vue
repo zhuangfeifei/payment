@@ -161,7 +161,7 @@ export default {
         }
         div:nth-child(2){
             width: 30%; height: 15vw; background-color: white; color: black; float: left; font-size: 4.5vw; font-family: PingFang-SC-Medium;
-            font-weight: Medium;
+            font-weight: Medium; border-radius: 0 0 3vw 0;
             span:nth-child(1){
                 color: RGBA(255, 139, 75, 1); font-size: 6vw; margin-right: 1vw; 
             }
