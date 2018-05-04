@@ -1,11 +1,11 @@
 <template>
     
-    <nav id="nav">
+    <div id="nav">
         <div class="headers">
-            <i @click="history" class="fa fa-angle-left his" aria-hidden="true"></i>
-            <span id="title" v-for="(value, index) in headers" :key="index">{{value}}</span>
+            <img @click="history" src="../assets/img/fan.png" alt="">
+            <slot></slot>
         </div>
-    </nav>
+    </div>
 
 </template>
 <script>
@@ -29,20 +29,15 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 /*顶部*/
 #nav{
-    width: 100%; height: 15vw; background-color: black; line-height: 15vw; font-size: 5vw;
-    position: fixed; top: 0; color: white; text-align: center; z-index: 100;
+    width: 100%; height: 15vw; background-color: black; line-height: 15vw; font-size: 5vw; font-weight: Bold;
+    position: fixed; top: 0; color: white; text-align: center; z-index: 100; position: relative;
 }
-.fa-angle-left{
-    float: left; margin-left: 5vw;
-    font-size: 10vw;
-    line-height: 15vw;
-}
-#title{
-    position: relative; left: -4vw;
-}         
+img{
+    width: 6vw; height: 6vw; float: left; position: absolute; top: 4.5vw; left: 1vw;
+}       
 </style>
 
 

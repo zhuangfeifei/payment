@@ -46,7 +46,7 @@ export default {
     methods:{
         login(){
             if(this.showPhone && this.showCode){
-                this.$router.push({path:'/'})
+                this.$router.push({path:'/',query:{login:1}})
             }
         }
     },
@@ -88,10 +88,10 @@ export default {
         width: 100%; height: 45vw; color: RGBA(255, 139, 75, 1); margin-top: 10vw; 
         .inputs{
             input::-moz-placeholder{
-                font-size: 5vw; color: white;
+                font-size: 5vw; color: white; font-family: PingFang-SC-Medium;
             }
             ::-webkit-input-placeholder{
-                font-size: 5vw; color: white;
+                font-size: 5vw; color: white; font-family: PingFang-SC-Medium;
             }
         }
         .phone{
@@ -111,16 +111,16 @@ export default {
             .inputs
         }
         button{
-            width: 30%; height: 10vw; float: right; background-color: white; color: RGBA(255, 139, 75, 1);
+            width: 30%; height: 10vw; float: right; background-color: white; color: RGBA(255, 139, 75, 1); font-family: PingFang-SC-Medium;
             outline: none!important; border: 0; font-size: 4vw; margin-top: 11vw; margin-right: 5%; border-radius: 1.5vw;
         }
     }
 
     footer{
-        width: 100%; height: 35vw;
+        width: 100%; height: 35vw; font-family: PingFang SC;
         button{
             width: 90%; height: 15vw; margin-left: 5%; font-size: 5.5vw; color: white; outline: none!important; font-weight: Bold;
-            background:rgba(206,206,206,1); border-radius: 2vw; box-shadow:0px 0px 10px rgba(43,43,43,0.1); border: 0;
+            background:rgba(206,206,206,1); border-radius: 2vw; box-shadow:0px 0px 10px rgba(43,43,43,0.1); border: 0; font-family: PingFang-SC-Bold;
         }
         div{
             width: 100%; height: 15vw; margin-top: 7vw; font-size: 4vw;

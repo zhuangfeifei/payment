@@ -9,23 +9,44 @@
             </div>
         </div>
 
-        <div class="btn">
+        <div v-if="this.$route.query.login" class="btn">
+            <p>对不起，您还未添加车牌</p>
+            <router-link to="/LicensePlate">
+                <button>添加车牌</button>
+            </router-link>
+        </div>
+        <div v-if="!this.$route.query.plate_num" class="btns">
+            <div class="plate">苏E·B2101</div>
+            <p><span>进入时间</span><span>2018.01.01 14：00</span></p>
+            <p><span>当前时间</span><span>2018.01.01 16：00</span></p>
+            <p><span>已停时间</span><span>2 小时</span></p>
+            <p><span>应缴费</span><span>13</span><span>元</span></p>
+        </div>
+        <!--<div v-else class="btn">
             <p>您还未登录</p>
             <router-link to="/Login">
                 <button>登录</button>
             </router-link>
-        </div>
+        </div>-->
 
         <footer>
             <div class="list">
-                <div><img src="../assets/img/management.png" alt=""><p>车辆管理</p></div>
-                <div><img src="../assets/img/record.png" alt=""><p>停车记录</p></div>
-                <div><img src="../assets/img/exchange.png" alt=""><p>停车兑换</p></div>
-                <div><img src="../assets/img/charge.png" alt=""><p>收费标准</p></div>
+                <router-link to="/Administration">
+                    <div><img src="../assets/img/management.png" alt=""><p>车辆管理</p></div>
+                </router-link>
+                <router-link to="/Administration">
+                    <div><img src="../assets/img/record.png" alt=""><p>停车记录</p></div>
+                </router-link>
+                <router-link to="/Administration">
+                    <div><img src="../assets/img/exchange.png" alt=""><p>停车兑换</p></div>
+                </router-link>
+                <router-link to="/Administration">
+                    <div><img src="../assets/img/charge.png" alt=""><p>收费标准</p></div>
+                </router-link>
             </div>
         </footer>
         <div class="charge">
-            <div>缴费</div>
+            <div :class="{active:!this.$route.query.plate_num}" @click="Pay">缴费</div>
             <div><span>?</span><span>关于帮助</span></div>
         </div>
 
@@ -40,6 +61,11 @@ export default {
             
         }
     },
+    methods:{
+        Pay(){
+            this.$router.push({path:'/'})
+        }
+    }
 }
 </script>
 
@@ -85,35 +111,64 @@ export default {
         // border: 1px solid red;
         button{
             width: 60%; height: 13vw; background:rgba(255,139,75,1); border-radius: 1.5vw; box-shadow:0px 0px 20px rgba(0,0,0,0.2);
-            outline: none!important; border: 0; color: white; font-size: 5vw; margin-top: 3vw;
+            outline: none!important; border: 0; color: white; font-size: 5vw; margin-top: 3vw; font-family: PingFang-SC-Medium;
         }
     }
 
+    .btns{
+        width: 100%; height: 50vw; font-size: 4.5vw; margin-top: 3vw; letter-spacing: 0.3vw;
+        .plate{
+            width: 40%; height: 11vw; margin: 0 auto; font-family: PingFang-SC-Bold; font-weight: Bold; font-size: 6vw; text-align: center;
+            background-color: RGBA(255, 139, 75, 1); border-radius: 1.5vw; line-height: 11vw; margin-bottom: 5vw;
+        }
+        p{
+            line-height: 8vw; font-family: PingFang-SC-Medium; font-weight: Medium; padding-left: 18vw;
+            span:nth-child(2){
+                margin-left: 10vw;
+            }
+        }
+        p:nth-child(5){
+            margin-top: 2vw;
+            span:nth-child(2){
+                margin-left: 15vw; font-size: 8vw; margin-right: 2vw; color: RGBA(255, 188, 87, 1); font-family: PingFang-SC-Bold; font-weight: Bold;
+            }
+        }
+    }
+
+
     footer{
-        width: 95%; height: 35vw; margin-top: 15vw; margin-left: 2.5%; background-color: white; border-radius: 3vw 3vw 0 0;
+        width: 95%; height: 35vw; margin-left: 2.5%; background-color: white; border-radius: 3vw 3vw 0 0; position: fixed; bottom: 30vw;
         .list{
             width: 90%; height: 100%; display: flex; justify-content: space-around; margin: 0 auto;
-            div{
-                width: 25%; height: 100%; font-family:PingFang-SC-Medium; color:rgba(43,43,43,1); text-align: center;
-                padding-top: 6vw;
-                img{
-                    width: 15vw; height: 15vw; border-radius: 50%;
+            a{
+                width: 25%; height: 100%; text-decoration: none;
+                div{
+                    width: 100%; height: 100%; font-family:PingFang-SC-Medium; color:rgba(43,43,43,1); text-align: center;
+                    padding-top: 6vw;
+                    img{
+                        width: 15vw; height: 15vw; border-radius: 50%;
+                    }
+                    // border: 1px solid red;
                 }
-                // border: 1px solid red;
             }
         }
     }
     .charge{
-        width: 95%; height: 15vw; margin: 0 auto; border-top: 0.4vw solid RGBA(255, 139, 75, 1); text-align: center; line-height: 15vw; 
+        width: 95%; height: 15vw; margin-left: 2.5%; border-top: 0.4vw solid RGBA(255, 139, 75, 1); text-align: center; line-height: 15vw; position: fixed; bottom: 15vw;
         div:nth-child(1){
             width: 70%; height: 15vw; border-right: 0.4vw solid RGBA(255, 139, 75, 1); background-color: rgba(206,206,206,1);
-            font-size: 5vw; font-weight: Bold; border-radius: 0 0 0 3vw; float: left;
+            font-size: 5vw; font-weight: Bold; border-radius: 0 0 0 3vw; float: left; font-family: PingFang-SC-Bold; font-weight: Bold;
         }
         div:nth-child(2){
-            width: 30%; height: 15vw; background-color: white; color: black; float: left; font-size: 4.5vw;
+            width: 30%; height: 15vw; background-color: white; color: black; float: left; font-size: 4.5vw; font-family: PingFang-SC-Medium;
+            font-weight: Medium;
             span:nth-child(1){
                 color: RGBA(255, 139, 75, 1); font-size: 6vw; margin-right: 1vw; 
             }
         }
+    }
+
+    .active{
+        background:rgba(255,139,75,1)!important;
     }
 </style>
