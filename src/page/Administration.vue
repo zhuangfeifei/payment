@@ -10,18 +10,8 @@
 
         <div class="mains">
             <div class="main">
-                <div>
-                    <img src="../assets/img/cat1.png" alt="">
-                    <p>苏E·B1A03</p>
-                    <img class="cha" src="../assets/img/deletes.png" alt="">
-                </div>
-                <div>
-                    <img src="../assets/img/cat2.png" alt="">
-                    <p>苏E·B1A03</p>
-                    <img class="cha" src="../assets/img/deletes.png" alt="">
-                </div>
-                <div>
-                    <img src="../assets/img/cat3.png" alt="">
+                <div v-for="(item,index) in imgs" :key="index">
+                    <img v-lazy="item" alt="">
                     <p>苏E·B1A03</p>
                     <img class="cha" src="../assets/img/deletes.png" alt="">
                 </div>
@@ -41,7 +31,7 @@ import header from './header'
 export default {
     data () {
         return{
-            
+            imgs: [require('../assets/img/cat1.png'),require('../assets/img/cat2.png'),require('../assets/img/cat3.png')]
         }
     },
     components:{
@@ -67,7 +57,8 @@ export default {
         box-sizing: border-box;
     }
     #Administration{
-        width: 100%; height: 100vh; position: fixed; font-size: 4vw; top: 0; font-family: PingFang-SC-Regular; font-weight: Regular;
+        width: 100%; height: 100vh; font-size: 4vw; top: 0; font-family: PingFang-SC-Regular; font-weight: Regular;
+         padding-top: 15vw; position: fixed!important;
     }
 
     nav{

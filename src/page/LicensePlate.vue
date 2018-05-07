@@ -136,7 +136,7 @@ export default {
         box-sizing: border-box;
     }
     #plate{
-        width: 100%; height: 100vh; position: fixed; font-size: 4vw; top: 0;
+        width: 100%; height: 100vh; position: fixed; font-size: 4vw; top: 0; padding-top: 15vw;
     }
 
     nav{
