@@ -1,12 +1,22 @@
 <template>
   <div id="app">
     <router-view/>
+    <v-loading v-show="fetchLoading"></v-loading>
   </div>
 </template>
 
 <script>
+import Loading from '@/page/_loading'
 export default {
-  name: 'App'
+  name: 'App',
+  components:{
+    'v-loading':Loading
+  },
+  computed:{
+    fetchLoading(){
+      return this.$store.state.fetchLoading
+    }
+  }
 }
 </script>
 

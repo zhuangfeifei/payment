@@ -11,6 +11,9 @@ Vue.use(VueLazyLoad,{
 })
 
 
+import store from './store/store'
+Vue.prototype.$store = store
+
 
 Vue.config.productionTip = false
 

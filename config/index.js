@@ -10,11 +10,20 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      "/Shop":{
+    		// target:"http://192.168.1.137:8088",
+        target:"http://192.168.1.79",
+    		changeOrigin: true,
+    		pathRewrite: {
+          '^/Shop': ''
+        }
+      } 
+    },
 
     // Various Dev Server settings
-    host: '192.168.1.148', // can be overwritten by process.env.HOST
-    port: 8010, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    host: '192.168.1.58', // can be overwritten by process.env.HOST
+    port: 8020, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,

@@ -1,5 +1,6 @@
 <template>
-    <div id="home" v-lazy:background-image="imgIcon">
+    <div id="home">
+    <!--<div id="home" v-lazy:background-image="imgIcon">-->
 
         <div class="main">
             <div><p>01:20</p><p>2018.04.22</p></div>
@@ -45,6 +46,7 @@
 </template>
 
 <script>
+// import { mapGetters, mapActions } from 'vuex'
 export default {
     name: 'home',
     data () {
@@ -57,6 +59,17 @@ export default {
                 { title:'收费标准', img:require("../assets/img/charge.png"), url:'/Administration' },
             ]
         }
+    },
+    beforeCreate(){
+        this.$store.dispatch('index')
+    },
+    computed:{
+        show(){
+            return this.$store.state.fetchLoading
+        }
+    },
+    created(){
+        
     },
     methods:{
         Pay(){
@@ -73,7 +86,7 @@ export default {
     }
     #home{
         width: 100%; height: 100vh; color: white; padding-top: 5vw; font-size: 4vw; position: fixed;
-        background: no-repeat; background-size: 100% 100%; 
+        background: url("../assets/img/back.png") no-repeat; background-size: 100% 100%; 
     }
 
     .family{
