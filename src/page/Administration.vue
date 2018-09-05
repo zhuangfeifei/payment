@@ -3,24 +3,31 @@
 
         <header-item>车辆管理</header-item>
         
-        <!--<nav>
-            <img src="../assets/img/cat.png" alt="">
-            <p>对不起，您还未添加车牌</p>
-        </nav>-->
-
-        <div class="mains">
+        <div v-if="info.cars" class="mains">
+            <!--<div class="main" :style="{'width': ''+((info.cars[0].length)*87 + 14)+'vw'}">
+                <div @click="Record(item.id)" v-for="(item,index) in info" :key="index">
+                    <img :src="imgs[index]" alt="">
+                    <p>{{item.carNo}}</p>
+                    <img @click="deletes(index)" class="delete" src="../assets/img/deletes.png" alt="">
+                </div>
+            </div>-->
             <div class="main">
-                <div v-for="(item,index) in imgs" :key="index">
-                    <img v-lazy="item" alt="">
-                    <p>苏E·B1A03</p>
-                    <img class="cha" src="../assets/img/deletes.png" alt="">
+                <div @click="Record(info.cars[0].id)">
+                    <img :src="imgs[1]" alt="">
+                    <p>{{info.cars[0].carNo}}</p>
+                    <img @click.stop="deletes" class="delete" src="../assets/img/deletes.png" alt="">
                 </div>
             </div>
         </div>
 
-        <footer>
-            <button>添加车牌</button>
-            <p><span>温馨提示：</span><span>您最多可以添加3个车牌</span></p>
+        <nav v-else>
+            <img src="../assets/img/cat.png" alt="">
+            <p>对不起，您还未添加车牌</p>
+        </nav>
+
+        <footer v-if="info.cars">
+            <button @click="Add" :class="{noAdd:info.cars ? true : false}">添加车牌</button>
+            <p><span>温馨提示：</span><span>您最多可以添加1个车牌</span></p>
         </footer>
         
     </div>
@@ -31,11 +38,20 @@ import header from './header'
 export default {
     data () {
         return{
-            imgs: [require('../assets/img/cat1.png'),require('../assets/img/cat2.png'),require('../assets/img/cat3.png')]
+            imgs: [require('../assets/img/cat1.png'),require('../assets/img/cat2.png'),require('../assets/img/cat3.png')],
         }
     },
     components:{
         "header-item":header
+    },
+    beforeCreate(){
+        // this.$store.dispatch('list')
+    },
+    computed:{
+        info(){
+            if(this.$store.state.info == '') this.$store.commit('SET_INFO')
+            return this.$store.state.info
+        }
     },
     created(){
         
@@ -44,7 +60,15 @@ export default {
         
     },
     methods:{
-        
+        Add(){
+            if(this.info.length < 1) this.$router.push({path:'/LicensePlate'})
+        },
+        deletes(){
+            this.$store.dispatch('unbind', this.info.cars[0].id)
+        },
+        Record(id){
+            this.$store.dispatch('record', id)
+        }
     },
     watch:{
         
@@ -57,8 +81,8 @@ export default {
         box-sizing: border-box;
     }
     #Administration{
-        width: 100%; height: 100vh; font-size: 4vw; top: 0; font-family: PingFang-SC-Regular; font-weight: Regular;
-         padding-top: 15vw; position: fixed!important;
+        width: 100%; min-height: 100vh; font-size: 4vw; top: 0; font-family: PingFang-SC-Regular; font-weight: Regular;
+         padding-top: 15vw; position: fixed!important; background-color: white;
     }
 
     nav{
@@ -72,10 +96,10 @@ export default {
     }
 
     .mains{
-        width: 100%; overflow-x: auto;
+        width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;
     }
     .main{
-        width: 275vw; height: 55vh; margin-top: 5vw; margin-bottom: 8vw; padding-left: 5vw;
+        height: 55vh; margin-top: 5vw; margin-bottom: 8vw; padding-left: 5vw;
         display: flex;
         div{
             width: 83vw; height: 100%; margin-left: 4vw; text-align: center; position: relative;
@@ -86,8 +110,8 @@ export default {
                 position: absolute; top: 3vw; left: 20vw; color: white; font-family: PingFang-SC-Bold; font-weight: bold; font-size: 8vw;
                 letter-spacing: 0.3vw; 
             }
-            .cha{
-                width: 6vw; height: 6vw; position: absolute; top: 5vw; right: 5vw;
+            .delete{
+                width: 6vw; height: 6vw; position: absolute; top: 3vw; right: 3vw;
             }
         }
     }
@@ -101,6 +125,7 @@ export default {
         p{
             margin-top: 5vw; font-size: 4.5vw;
         }
+        .noAdd{ background-color: rgba(206,206,206,1); }
     }
 
 </style>

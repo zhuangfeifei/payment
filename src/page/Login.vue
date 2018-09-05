@@ -14,11 +14,11 @@
             <p v-show="showCode">请输入验证码</p>
             <input type="text" v-model="codes" placeholder="请输入验证码">
         </div>
-        <button>获取验证码</button>
+        <button class="code_btn" @click="getCode" :class="{codes:disabled_btn}" :disabled="disabled_btn">{{time}}</button>
     </div>
 
     <footer>
-        <button :class="{active: showPhone && showCode}" @click="login">登录</button>
+        <button class="btn" :class="{active: showPhone && showCode}" @click="login">登录</button>
         <div>
             <span>小提示：</span>
             <ol>
@@ -36,17 +36,38 @@ export default {
     name: 'login',
     data () {
         return {
-            phones:'', codes:'', showPhone:false, showCode:false, showLogin:false
+            phones:'', codes:'', showPhone:false, showCode:false, showLogin:false, disabled_btn: false, time:'获取验证码'
         }
     },
-    created(){},
+    created(){
+        this.$nextTick(()=>{
+            $('body').height($('body')[0].clientHeight);
+        })
+    },
     mounted(){
-
+        
     },
     methods:{
+        getCode(){
+            if(this.phones.length != 11) {
+                this.$toast('请输入正确的手机号！')
+                return
+            }
+            this.disabled_btn = true
+            this.$store.dispatch('code', this.phones)
+            this.time = 120
+            let interval = window.setInterval(()=> {
+                if ((this.time--) <= 0) {
+                    this.time = '获取验证码'
+                    this.disabled_btn = false
+                    window.clearInterval(interval)
+                }
+            }, 1000)
+        },
         login(){
+            var information = { phone: this.phones, code: this.codes }
             if(this.showPhone && this.showCode){
-                this.$router.push({path:'/',query:{login:1}})
+                this.$store.dispatch('phone', information)
             }
         }
     },
@@ -74,7 +95,7 @@ export default {
         box-sizing: border-box;
     }
     #login{
-        width: 100%; height: 100vh; color: white; padding-top: 5vw; font-size: 4vw; position: fixed;
+        width: 100%; min-height: 100vh; color: white; padding-top: 5vw; font-size: 4vw; position: fixed; top: 0; left: 0;
         background: url("../assets/img/back.png") no-repeat; background-size: 100% 100%; 
     }
     nav{
@@ -110,22 +131,25 @@ export default {
             }
             .inputs
         }
-        button{
-            width: 30%; height: 10vw; float: right; background-color: white; color: RGBA(255, 139, 75, 1); font-family: PingFang-SC-Medium;
-            outline: none!important; border: 0; font-size: 4vw; margin-top: 11vw; margin-right: 5%; border-radius: 1.5vw;
+        .code_btn{
+            width: 30%; height: 10vw; background-color: white; color: RGBA(255, 139, 75, 1); font-family: PingFang-SC-Medium;
+            outline: none!important; border: 0; font-size: 4vw; margin-top: 11vw; margin-left: 5%; border-radius: 1.5vw;
+        }
+        .codes{
+            color: gray;
         }
     }
 
     footer{
         width: 100%; height: 35vw; font-family: PingFang SC;
-        button{
+        .btn{
             width: 90%; height: 15vw; margin-left: 5%; font-size: 5.5vw; color: white; outline: none!important; font-weight: Bold;
             background:rgba(206,206,206,1); border-radius: 2vw; box-shadow:0px 0px 10px rgba(43,43,43,0.1); border: 0; font-family: PingFang-SC-Bold;
         }
         div{
             width: 100%; height: 15vw; margin-top: 7vw; font-size: 4vw;
             span{ float: left; margin-left: 10vw;}
-            ol{ float: left; margin-left: 7vw;}
+            ol{ float: left; margin-left: 7vw; list-style: decimal; }
         }
     }
     .active{

@@ -3,23 +3,27 @@
 
         <header-item>停车记录</header-item>
         
-        <!--<nav>
+        <nav v-if="record == ''">
             <img v-lazy="imgs" alt="">
             <p>您还没有停车记录</p>
             <p>再忙，也要记得来方圆里逛逛哦~</p>
-        </nav>-->
+        </nav>
 
-        <div class="main" v-for="(item,index) in 6" :key="index">
+        <div v-else class="main" v-for="(item,index) in record" :key="index">
             <div class="record_list">
                 <div class="title">
-                    <p><span>苏E·B1A03</span><span>2018.03.09 16：00</span></p>
+                    <p><span>{{item.carNo}}</span><span>{{item.enterTime}}</span></p>
                     <div></div>
                 </div>
                 <div class="content">
                     <div><img v-lazy="imgs1" alt=""></div>
                     <div>
-                        <p>苏州方圆里</p>
-                        <p><span>4小时12分10秒</span><span>13元</span></p>
+                        <p>{{item.plgName}}</p>
+                        <p>
+                            <span v-if="item.exitTime && item.enterTime">{{(Date.parse(new Date(item.exitTime.replace(/-/g, "/"))) - Date.parse(new Date(item.enterTime.replace(/-/g, "/")))) | filters}}</span>
+                            <span v-else-if="item.enterTime">{{(time.current - Date.parse(new Date(item.enterTime.replace(/-/g, "/")))) | filters}}</span>
+                            <!--<span>13元</span>-->
+                        </p>
                     </div>
                 </div>
             </div>
@@ -33,23 +37,50 @@ import header from './header'
 export default {
     data () {
         return{
-            imgs: require('../assets/img/records.png'),imgs1: require('../assets/img/stop.png')
+            imgs: require('../assets/img/records.png'),imgs1: require('../assets/img/stop.png'),
+            page: 1,
         }
     },
     components:{
         "header-item":header
     },
+    beforeCreate(){
+        var page = { num: 1, isP: false }
+        this.$store.dispatch('history', page)
+    },
+    computed:{
+        record(){
+            if(this.$store.state.record == '') this.$store.commit('SET_RECORD')
+            return this.$store.state.record
+        },
+        time(){
+            return this.$store.state.times
+        },
+    },
     created(){
+        // document.title = "停车记录"
         
     },
     mounted(){
-        
+        window.addEventListener('scroll', this.handleScroll)
     },
     methods:{
-        
+        handleScroll(){
+            let scrollTop = $(window).scrollTop()
+            let scrollHeight = $(document).height()
+            let windowHeight = $(window).height()
+            if (scrollTop + windowHeight === scrollHeight) {
+                this.page ++
+                var page = { num: this.page, isP: true }
+                if(this.$store.state.isPage) this.$store.dispatch('history', page)
+            }
+        }
     },
     watch:{
         
+    },
+    destroyed () {
+        window.removeEventListener('scroll', this.handleScroll)
     }
 }
 </script>
@@ -59,9 +90,13 @@ export default {
         box-sizing: border-box;
     }
     #record{
-        width: 100%; min-height: 100vh; font-size: 4vw; top: 0; font-family: PingFang-SC-Regular; font-weight: Regular;
+        width: 100%; min-height: 100vh; font-size: 4vw; font-family: PingFang-SC-Regular; font-weight: Regular;
         background-color: RGBA(232, 232, 232, 1); padding-bottom: 5vw; padding-top: 15vw;
     }
+
+
+    .font1{ font-family:PingFang-SC-Medium; font-weight: Medium; }
+
 
     nav{
         width: 100%; text-align: center; margin: 20vw auto;

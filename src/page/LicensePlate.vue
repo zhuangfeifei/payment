@@ -4,30 +4,23 @@
         <header-item>添加车牌</header-item>
         
         <nav>
-            <p>请您添加真是有效的车牌（新能源选填）</p>
+            <p>请您添加真实有效的车牌（新能源选填）</p>
             <div class="License_plate">
                 <div><span :class="{active:show0}" @click="change_city0">{{city}}</span><span :class="{active:show1}" @click="change_city1">{{city_num}}</span></div>
                 <div @click="change_city2">
-                    <span :class="{active:num.length == 0 && show2 && !show3}">{{num[0]}}</span><span :class="{active:num.length == 1 && show2 && !show3}">{{num[1]}}</span>
-                    <span :class="{active:num.length == 2 && show2 && !show3}">{{num[2]}}</span><span :class="{active:num.length == 3 && show2 && !show3}">{{num[3]}}</span>
-                    <span :class="{active:num.length == 4 && show2 && !show3}">{{num[4]}}</span>
+                    <span :class="{active:num.length == 0 && !show0 && !show1}">{{num[0]}}</span>
+                    <span v-for="(item,index) in 4" :key="index" :class="{active:num.length == index + 1}">{{num[index + 1]}}</span>
                 </div>
-                <div @click="change_city3" :class="{active:show3}">{{energys}}</div>
+                <div @click="change_city2" :class="{active:num.length == 5}">{{num[5]}}</div>
             </div>
             <div class="energy">新能源</div>
         </nav>
 
-        <div class="main" v-show="show0">
-            <span v-for="(item,index) in data.city" :key="index" @click="plate_city(index)" :class="{city_active:city_index == index}">{{item}}</span>
-            <div><img src="../assets/img/delete.png" alt=""></div>
-        </div>
-        <div class="main" v-show="show1">
-            <span v-for="(item,index) in data.city_Letter" :key="index" @click="plate_city_Letter(index)" :class="{city_active:city_Letter_index == index}">{{item}}</span>
-            <div><img src="../assets/img/delete.png" alt=""></div>
-        </div>
-        <div class="main" v-show="show2">
-            <span v-for="(item,index) in data.city_Letter_num" :key="index" @click="plate_city_Letter_num(index)" :class="{city_active:city_Letter_num_index == index}">{{item}}</span>
-            <div @click="deletes"><img src="../assets/img/delete.png" alt=""></div>
+        <div class="main">
+            <span v-for="(item,index) in show0 ? data.city : show1 ? data.city_Letter : data.city_Letter_num" :key="index" 
+            @click="show0 ? plate_city(index) : show1 ? plate_city_Letter(index) : plate_city_Letter_num(index)" 
+            :class="{city_active:show0 ? city_index == index : show1 ? city_Letter_index == index : city_Letter_num_index == index}">{{item}}</span>
+            <div v-if="!show0 && !show1" @click="deletes"><img src="../assets/img/delete.png" alt=""></div>
         </div>
 
         <button class="btn" :class="{btn_active:show_btn}" @click="Determine">完成添加</button>
@@ -41,14 +34,19 @@ export default {
     data () {
         return{
             data:{
-                city:['京','津','冀','晋','蒙','辽','吉','黑','沪','苏','浙','皖','闽','赣','鲁',
-                '豫','鄂','湘','粤','桂','琼','渝','川','贵','云','藏','陕','甘','青','宁','新','台'],
-                city_Letter:['A','B','C','D','E','F','G','H','I','J','K','M','L','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
-                city_Letter_num:['A','B','C','D','E','F','G','H','I','J','K','M','L','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+                city:[
+                    '京','津','冀','晋','蒙','辽','吉','黑','沪','苏','浙','皖','闽','赣','鲁',
+                    '豫','鄂','湘','粤','桂','琼','渝','川','贵','云','藏','陕','甘','青','宁','新','台'
+                ],
+                city_Letter:[
+                    'A','B','C','D','E','F','G','H','I','J','K','M','L','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
+                ],
+                city_Letter_num:[
+                    'A','B','C','D','E','F','G','H','I','J','K','M','L','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
                     '1','2','3','4','5','6','7','8','9','0'
                 ],
             },
-            city:'苏', city_index:9, city_num:'E', city_Letter_index:4, city_Letter_num_index:-1, show0:false, show1:false, show2:false, show3:false,
+            city:'苏', city_index:9, city_num:'E', city_Letter_index:4, city_Letter_num_index:-1, show0:false, show1:false, show2:false,
             num:[],count:0,energys:'',show_btn:false
         }
     },
@@ -65,26 +63,14 @@ export default {
         change_city0(){
             this.show0 = true
             this.show1 = false
-            this.show2 = false
-            this.show3 = false
         },
         change_city1(){
-            this.show1 = true
             this.show0 = false
-            this.show2 = false
-            this.show3 = false
+            this.show1 = true
         },
         change_city2(){
-            this.show2 = true
             this.show0 = false
             this.show1 = false
-            this.show3 = false
-        },
-        change_city3(){
-            this.show3 = true
-            this.show0 = false
-            this.show1 = false
-            this.show2 = true
         },
         plate_city(index){
             this.city = this.data.city[index]
@@ -95,33 +81,28 @@ export default {
             this.city_Letter_index = index
         },
         plate_city_Letter_num(index){
-            if(this.show3){
-                this.energys = this.data.city_Letter_num[index]
-            }
-            if(!this.show3 && this.count < 5){
+            if(this.count < 6){
                 this.num.push(this.data.city_Letter_num[index])
+                this.city_Letter_num_index = index
                 this.count ++
             }
-            this.city_Letter_num_index = index
         },
         deletes(){
-            if(this.count > 0 && !this.show3){
+            if(this.count > 0){
                 this.num.pop()
                 this.count --
-            }
-            if(this.show3){
-                this.energys = ''
             }
         },
         Determine(){
             if(this.show_btn){
-                this.$router.push({path:'/',query:{plate_num:1}})
+                var brand = this.city+this.city_num+this.num.join('')
+                this.$store.dispatch('binding', brand)
             }
         }
     },
     watch:{
         count(val,old){
-            if(val == 5){
+            if(val > 4){
                 this.show_btn = true
             }else{
                 this.show_btn = false
@@ -136,7 +117,7 @@ export default {
         box-sizing: border-box;
     }
     #plate{
-        width: 100%; height: 100vh; position: fixed; font-size: 4vw; top: 0; padding-top: 15vw;
+        width: 100%; min-height: 100vh; font-size: 4vw; top: 0; padding: 15vw 0 10vw 0; background-color: white;
     }
 
     nav{
