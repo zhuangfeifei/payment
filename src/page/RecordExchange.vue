@@ -6,7 +6,7 @@
         <nav><div @click="change(index)" v-for="(item,index) in titles" :key="index" :class="{active:title_num == index}"><span>{{item}}</span><section v-show="title_num == index"></section></div></nav>
         
         <div class="Exchange_list">
-            <div v-if="userVoucher.length > 0" class="list">
+            <div v-if="userVoucher != ''" class="list">
                 <div class="list_" @click="useConpon(item)" v-for="(item,index) in userVoucher" :key="index" :class="{active: show}">
                     <div>
                         <p>{{item.ticketName}}</p>

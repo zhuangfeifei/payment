@@ -79,9 +79,9 @@ const mutations = {
 
 const actions = {
     info({commit,state,dispatch}){   // 查询车主手机及车牌的绑定信息
-        Api.post('/shopping/api/car/info', $.param({ carOwnerId: state.openId }))
+        Api.post('/shops/api/car/info', $.param({ carOwnerId: state.openId }))
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data.code == 200) {
                 Util.setLocal(res.data.data, 'info')
                 commit('SET_INFO')
@@ -91,9 +91,9 @@ const actions = {
         .catch(err => console.log(err))
     },
     access({commit,state}){   // 查询车主当前在库的车辆进出记录信息
-        Api.post('/shopping/api/car/access', $.param({ carOwnerId: state.openId }))
+        Api.post('/shops/api/car/access', $.param({ carOwnerId: state.openId }))
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data.code == 200) {
                 Util.setLocal(res.data.data, 'access')
                 commit('SET_ACCESS')
@@ -102,9 +102,9 @@ const actions = {
         .catch(err => console.log(err))
     },
     history({commit,state}, page){   // 查询当前车主所有车辆停车历史记录
-        Api.post('/shopping/api/car/history', $.param({ carOwnerId: state.openId, current: page.num, limit: 4 }))
+        Api.post('/shops/api/car/history', $.param({ carOwnerId: state.openId, current: page.num, limit: 4 }))
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data.code == 200) {
                 if(res.data.data.rows.length > 0) {
                     Util.setLocal(res.data.data.rows, 'record', page.isP)
@@ -120,7 +120,7 @@ const actions = {
         .catch(err => console.log(err))
     },
     remain({commit,state}){   // 查询停车场剩余车位数
-        Api.post('/shopping/api/car/remain')
+        Api.post('/shops/api/car/remain')
         .then(res => {
             // console.log(res.data)
             if (res.data.code == 200) {
@@ -145,7 +145,7 @@ const actions = {
         .catch(err => console.log(err))
     },
     phone({commit,state,dispatch}, information){   // 绑定手机号
-        Api.post('/shopping/api/car/phone', $.param({ carOwnerId: state.openId, phone: information.phone, code: information.code }))
+        Api.post('/shops/api/car/phone', $.param({ carOwnerId: state.openId, phone: information.phone, code: information.code }))
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200){
@@ -158,7 +158,7 @@ const actions = {
         .catch(err => console.log(err))
     },
     binding({commit,state,dispatch}, brand){   // 绑定车牌号
-        Api.post('/shopping/api/car/binding', $.param({ carOwnerId: state.openId, carNo: brand }))
+        Api.post('/shops/api/car/binding', $.param({ carOwnerId: state.openId, carNo: brand }))
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200){
@@ -171,7 +171,7 @@ const actions = {
         .catch(err => console.log(err))
     },
     // list({commit,state,dispatch}){   // 绑定的车辆列表
-    //     Api.post('/shopping/api/car/list', $.param({ carOwnerId: state.openId }))
+    //     Api.post('/shops/api/car/list', $.param({ carOwnerId: state.openId }))
     //     .then(res => {
     //         console.log(res.data)
     //         if(res.data.code == 200){
@@ -184,7 +184,7 @@ const actions = {
     //     .catch(err => console.log(err))
     // },
     unbind({commit,state,dispatch}, carIds){   // 解绑车辆
-        Api.post('/shopping/api/car/unbind', $.param({ carId: carIds }))
+        Api.post('/shops/api/car/unbind', $.param({ carId: carIds }))
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200){
@@ -197,7 +197,7 @@ const actions = {
         .catch(err => console.log(err))
     },
     record({commit,state,dispatch}, carIds){   // 根据车牌查询进出记录
-        Api.post('/shopping/api/car/record', $.param({ carId: carIds, current: 1, limit: 10 }))
+        Api.post('/shops/api/car/record', $.param({ carId: carIds, current: 1, limit: 10 }))
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200){
@@ -211,7 +211,7 @@ const actions = {
         .catch(err => console.log(err))
     },
     voucher({commit,state,dispatch}){   // 查询可进行积分兑换的抵扣券列表
-        Api.post('/shopping/api/car/tkt/list')
+        Api.post('/shops/api/car/tkt/list')
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200){
@@ -224,7 +224,7 @@ const actions = {
         .catch(err => console.log(err))
     },
     userVoucher({commit,state,dispatch}, useStates){   // 查询车主名下抵扣券列表
-        Api.post('/shopping/api/car/tkt/user/list', $.param({ carOwnerId: state.openId, useState: useStates }))
+        Api.post('/shops/api/car/tkt/user/list', $.param({ carOwnerId: state.openId, useState: useStates }))
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200){
@@ -238,7 +238,7 @@ const actions = {
         .catch(err => console.log(err))
     },
     exchange({commit,state,dispatch}, ticketIds){   // 积分兑换抵扣券
-        Api.post('/shopping/api/car/tkt/exchange', $.param({ carOwnerId: state.openId, ticketId: ticketIds }))
+        Api.post('/shops/api/car/tkt/exchange', $.param({ carOwnerId: state.openId, ticketId: ticketIds }))
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200){
@@ -251,7 +251,7 @@ const actions = {
         .catch(err => console.log(err))
     },
     use({commit,state,dispatch}, list){   // 使用抵扣券
-        Api.post('/shopping/api/car/tkt/use', $.param({ carOwnerId: state.openId, uniqueCode: list.uniqueCode, carId: list.id }))
+        Api.post('/shops/api/car/tkt/use', $.param({ carOwnerId: state.openId, uniqueCode: list.uniqueCode, carId: list.id }))
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200){
@@ -268,7 +268,7 @@ const actions = {
         .catch(err => console.log(err))
     },
     pay({commit,state,dispatch}, carNos){   // 缴费
-        Api.post('/shopping/api/car/pay', $.param({ carNo: carNos || state.access[0].carNo }))
+        Api.post('/shops/api/car/pay', $.param({ carNo: carNos || state.access[0].carNo }))
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200){
